@@ -1,0 +1,29 @@
+{
+  "name": "twitch-chat-overlay",
+  "version": "1.0.0",
+  "description": "Overlay to show selected twitch chat in a front layer for gaming or whatever task that is needed an overlay to read twitch chat.",
+  "main": "js/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start" : "electron --enable-transparent-visuals .",
+    "pack-win" : "electron-packager . chat-viewer-overlay --platform=win32 --arch=x64"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kaecius/twitch-chat-overlay.git"
+  },
+  "author": "Daniel (Kaecius)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kaecius/twitch-chat-overlay/issues"
+  },
+  "homepage": "https://github.com/kaecius/twitch-chat-overlay#readme",
+  "devDependencies": {
+    "electron": "^6.0.1",
+    "electron-packager": "^14.0.4"
+  },
+  "dependencies": {
+    "electron-window-state": "^5.0.3",
+    "tmi.js": "^1.4.5"
+  }
+}
