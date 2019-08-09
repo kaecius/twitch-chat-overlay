@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron --enable-transparent-visuals .",
-    "pack-win": "electron-packager . chat-viewer-overlay --platform=win32 --arch=x64"
+    "pack-win": "electron-packager . chat-viewer-overlay --platform=win32 --arch=x64 --asar --overwrite"
   },
   "repository": {
     "type": "git",

@@ -1,14 +1,26 @@
 const {
     app,
-    BrowserWindow
+    BrowserWindow,
+    Tray,
+    Menu,
+    nativeImage
 } = require('electron');
+const path = require('path');
+//const properties = require('js/properties');
 const windowStateKeeper = require('electron-window-state');
 
 let mainWin;
 let selector;
-
+let tray;
 
 function init() {
+    initMainWindow();
+    initSelectorModal();
+    initTray();
+    //console.info(app.getPath("userData"));
+}
+
+function initMainWindow() {
     let mainWinState = windowStateKeeper({
         defaultWidth: 800,
         defaultHeight: 600
@@ -42,34 +54,48 @@ function init() {
         mainWin = null;
     });
 
+}
+
+function initSelectorModal() {
     selector = new BrowserWindow({
-        parent : mainWin,
-        backgroundColor: '#FF4B0082', // Indigo 35% transp
-        width : 400,
-        height : 300,
-        autoHideMenuBar : true,
-        resizable : false,
-        minimizable : false,
-        maximizable : false,
-        fullscreenable : false,
-        transparent : true,
-        webPreferences : {
-            nodeIntegration : true
+        parent: mainWin,
+        backgroundColor: '#BF4B0082', // Indigo 35% transp
+        icon : 'resources/twitch.ico',
+        width: 400,
+        height: 300,
+        autoHideMenuBar: true,
+        resizable: false,
+        minimizable: false,
+        maximizable: false,
+        fullscreenable: false,
+        transparent: true,
+        movable: false,
+        webPreferences: {
+            nodeIntegration: true
         }
     });
     selector.setVisibleOnAllWorkspaces(true);
     selector.loadFile('view/channel-selection.html');
-    
+
     selector.on('closed', () => {
         selector = null;
         mainWin.close();
     });
-    console.info("PATH-------------");
-    console.info(app.getPath("userData"));
 }
 
+function initTray(){
+    console.log(__dirname);
+    tray = new Tray(nativeImage.createFromPath(path.join(__dirname,'../resources/twitch.ico')));
+    tray.setToolTip('Twitch chat overlay');
+    let contextMenu = Menu.buildFromTemplate([
+        { label : 'Close', click : function(){
+            app.quit();
+        }}
+    ])
+    tray.setContextMenu(contextMenu);
+}
 
-app.on('ready',() => {
+app.on('ready', () => {
     setTimeout(init, 300);
 });
 
@@ -79,8 +105,8 @@ app.on('window-all-closed', () => {
     }
 });
 
-app.on('activate',() => {
-    if(mainWin === null){
+app.on('activate', () => {
+    if (mainWin === null) {
         init();
     }
 });
