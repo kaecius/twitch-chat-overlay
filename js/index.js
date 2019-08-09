@@ -5,7 +5,7 @@ const {
 const windowStateKeeper = require('electron-window-state');
 
 let mainWin;
-//console.info(app.getPath("userData"));
+let selector;
 
 
 function init() {
@@ -15,7 +15,7 @@ function init() {
     });
 
     mainWin = new BrowserWindow({
-        backgroundColor: '40000000', // Black 25% transp
+        backgroundColor: '#40000000', // Black 25% transp
         width: mainWinState.width,
         height: mainWinState.height,
         x: mainWinState.x,
@@ -23,12 +23,10 @@ function init() {
         resizable: false,
         autoHideMenuBar: true,
         transparent: true,
-        maximizable: false,
         alwaysOnTop: true,
         focusable: false,
         minimizable: false,
         maximizable: false,
-        resizable: false,
         fullscreenable: false,
         frame: false,
         webPreferences: {
@@ -38,17 +36,51 @@ function init() {
     mainWin.setVisibleOnAllWorkspaces(true);
     mainWinState.manage(mainWin);
 
-    mainWin.on('close', () => {
+    mainWin.loadFile('view/index.html');
+
+    mainWin.on('closed', () => {
         mainWin = null;
     });
 
-
-    mainWin.loadFile('view/index.html');
-
+    selector = new BrowserWindow({
+        parent : mainWin,
+        backgroundColor: '#FF4B0082', // Indigo 35% transp
+        width : 400,
+        height : 300,
+        autoHideMenuBar : true,
+        resizable : false,
+        minimizable : false,
+        maximizable : false,
+        fullscreenable : false,
+        transparent : true,
+        webPreferences : {
+            nodeIntegration : true
+        }
+    });
+    selector.setVisibleOnAllWorkspaces(true);
+    selector.loadFile('view/channel-selection.html');
+    
+    selector.on('closed', () => {
+        selector = null;
+        mainWin.close();
+    });
+    console.info("PATH-------------");
+    console.info(app.getPath("userData"));
 }
 
 
 app.on('ready',() => {
-    init();
+    setTimeout(init, 300);
 });
 
+app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') {
+        app.quit();
+    }
+});
+
+app.on('activate',() => {
+    if(mainWin === null){
+        init();
+    }
+});
