@@ -4,10 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Twitch chat overlay</title>
+    <link href="css/index.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <script src="js/index.js"></script>
 </head>
 
-<body>
-    <h1 style="color:white" id="lblChannelSelected">No channel selected!</h1>
-</body>
+<body onload="init();" onresize="setScrollBottom();">
 
-</html>
+    <div id="messages" class="noselect ">
+        <p><b style="color:white">--------Twitch chat messages-------</b></p>
+    </div>
+    <button id="arrowlock" class="unlocked"><img id="imgarrow" src="css/resources/arrow.png"></button>
+    <button id="lock" onclick="setDrag();" value="unlocked">
+        <img id="imglock" src="css/resources/lock.png">
+    </button> 
+</body>
+ </html>

@@ -15,9 +15,8 @@ let tray;
 
 function init() {
     initMainWindow();
-    initSelectorModal();
-    initTray();
-    //console.info(app.getPath("userData"));
+    //initSelector();
+    console.info(app.getPath("userData"));
 }
 
 function initMainWindow() {
@@ -32,7 +31,8 @@ function initMainWindow() {
         height: mainWinState.height,
         x: mainWinState.x,
         y: mainWinState.y,
-        resizable: false,
+        show : true,
+        resizable: true,
         autoHideMenuBar: true,
         transparent: true,
         alwaysOnTop: true,
@@ -46,6 +46,7 @@ function initMainWindow() {
         }
     });
     mainWin.setVisibleOnAllWorkspaces(true);
+    mainWin.webContents.openDevTools();
     mainWinState.manage(mainWin);
 
     mainWin.loadFile('view/index.html');
@@ -54,32 +55,33 @@ function initMainWindow() {
         mainWin = null;
     });
 
+    initTray();
 }
 
-function initSelectorModal() {
+function initSelector() {
     selector = new BrowserWindow({
-        parent: mainWin,
-        backgroundColor: '#BF4B0082', // Indigo 35% transp
+        //backgroundColor: '#BF4B0082', // Indigo 35% transp
         icon : 'resources/twitch.ico',
         width: 400,
         height: 300,
         autoHideMenuBar: true,
-        resizable: false,
-        minimizable: false,
+    //    resizable: false,
+    //    minimizable: false,
         maximizable: false,
         fullscreenable: false,
-        transparent: true,
-        movable: false,
+        transparent: false,
+   //     movable: false,
+        frame : true,
         webPreferences: {
             nodeIntegration: true
         }
     });
-    selector.setVisibleOnAllWorkspaces(true);
     selector.loadFile('view/channel-selection.html');
 
+    selector.webContents.openDevTools();
+    
     selector.on('closed', () => {
         selector = null;
-        mainWin.close();
     });
 }
 
@@ -106,7 +108,7 @@ app.on('window-all-closed', () => {
 });
 
 app.on('activate', () => {
-    if (mainWin === null) {
-        init();
+    if (mainWin === null && selector ===null) {
+        initMainWindow();
     }
 });

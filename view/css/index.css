@@ -1,0 +1,56 @@
+body {
+    overflow: hidden;
+    font-family: 'Roboto', sans-serif;
+    font-size: 13px;
+}
+
+.txtMessage {
+    color: white;
+}
+
+#lock {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    background-color: transparent;
+    border-style: none;
+}
+
+#arrowlock {
+    position: fixed;
+    top: 0px;
+    right: 40px;
+    background-color: transparent;
+    border-style: none;
+}
+
+#imglock,
+#imgarrow {
+    width: 15px;
+    height: 15px;
+    opacity: 0.5;
+}
+
+.unlocked {
+    -webkit-app-region: drag;
+}
+
+.locked {
+    -webkit-app-region: no-drag;
+}
+
+.noselect {
+    -webkit-touch-callout: none;
+    /* iOS Safari */
+    -webkit-user-select: none;
+    /* Safari */
+    -khtml-user-select: none;
+    /* Konqueror HTML */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+    user-select: none;
+    /* Non-prefixed version, currently
+                          supported by Chrome and Opera */
+}

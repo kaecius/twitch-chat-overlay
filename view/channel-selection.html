@@ -3,10 +3,45 @@
 
 <head>
     <title>Channel selection</title>
+    <link rel="stylesheet" type="text/css" href="photon/css/photon.min.css">
+    <script>
+        function continueChat() {
+            console.info("continue");
+        }
+
+        function closeWindow() {
+            remote.getCurrentWindow().close();
+        }
+    </script>
 </head>
 
-<body>
-    <p style="color:white">Channel selection</p>
+<body onload="init();" >
+    <header class="toolbar toolbar-header">
+        <h1 class="title">Twitch channel selection</h1>
+    </header>
+
+    <footer class="toolbar toolbar-footer">
+        <div class="toolbar-actions">
+            <button id="btnClose" class="btn btn-default" onclick="closeWindow()">
+                Cancel
+            </button>
+
+            <button class="btn btn-primary pull-right" onclick="continueChat()">
+                Continue
+            </button>
+        </div>
+    </footer>
+    <script>
+        const remote = require('electron').remote;
+        function init(){
+        }
+
+        function syncBodyBounds(){
+            let bounds = remote.getCurrentWindow().webContents.getOwnerBrowserWindow().getBounds();
+            document.body.style.width = bounds.width;
+            document.body.style.height = bounds.height;
+        }
+    </script>
 </body>
 
 </html>
