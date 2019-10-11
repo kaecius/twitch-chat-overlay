@@ -3,20 +3,21 @@ const {
     BrowserWindow,
     Tray,
     Menu,
-    nativeImage
+    nativeImage,
+    ipcMain
 } = require('electron');
 const path = require('path');
-//const properties = require('js/properties');
+const properties = require('./properties.js');
 const windowStateKeeper = require('electron-window-state');
 
-let mainWin;
+var mainWin;
+var settingsWindow;
 let selector;
 let tray;
 
 function init() {
     initMainWindow();
-    //initSelector();
-    console.info(app.getPath("userData"));
+    //new properties.UserSettingsStore();
 }
 
 function initMainWindow() {
@@ -36,7 +37,7 @@ function initMainWindow() {
         autoHideMenuBar: true,
         transparent: true,
         alwaysOnTop: true,
-        focusable: false,
+        focusable: true,
         minimizable: false,
         maximizable: false,
         fullscreenable: false,
@@ -54,35 +55,8 @@ function initMainWindow() {
     mainWin.on('closed', () => {
         mainWin = null;
     });
-
-    initTray();
-}
-
-function initSelector() {
-    selector = new BrowserWindow({
-        //backgroundColor: '#BF4B0082', // Indigo 35% transp
-        icon : 'resources/twitch.ico',
-        width: 400,
-        height: 300,
-        autoHideMenuBar: true,
-    //    resizable: false,
-    //    minimizable: false,
-        maximizable: false,
-        fullscreenable: false,
-        transparent: false,
-   //     movable: false,
-        frame : true,
-        webPreferences: {
-            nodeIntegration: true
-        }
-    });
-    selector.loadFile('view/channel-selection.html');
-
-    selector.webContents.openDevTools();
     
-    selector.on('closed', () => {
-        selector = null;
-    });
+    initTray();
 }
 
 function initTray(){
@@ -110,5 +84,42 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
     if (mainWin === null && selector ===null) {
         initMainWindow();
+    }
+});
+
+ipcMain.on('lock',(event) => {
+    mainWin.setResizable(false);
+});
+
+ipcMain.on('unlock',(event) => {
+    mainWin.setResizable(true);
+});
+
+ipcMain.on('config',(event,show) => {
+    if(show){
+        settingsWindow =  new BrowserWindow({
+            parent : mainWin,
+            modal: false,
+            width: 320,
+            height:340,
+            frame:false,
+            //resizable : false,
+            //maximizable : false,
+            //minimizable : false,
+            alwaysOnTop:true,
+            webPreferences:{
+                nodeIntegration:true
+            }
+        });
+        settingsWindow.loadFile('./view/config.html');
+        settingsWindow.once('ready-to-show', () => {
+            settingsWindow.show()
+        })
+    }else{
+        if(settingsWindow != null){
+            console.info("cerrando");
+            settingsWindow.close();
+            settingsWindow = null;
+        }
     }
 });

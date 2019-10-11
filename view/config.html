@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Config</title>
+    <link rel="stylesheet" type="text/css" href="photon/css/photon.min.css">
+    <link rel="stylesheet" type="text/css" href="css/config.css">
+    <script defer src="./js/config.js"></script>
+
+</head>
+
+<body onload="init()">
+    <header class="toolbar toolbar-header ">
+        <h1 class="title">App configuration</h1>
+        <span class="icon icon-cancel-circled" id="closeConfig" onclick="closeWindow()"></span>
+        <span id="dragSpan" class="draggable"></span>
+    </header>
+    <div>
+        <table id="configTable"> 
+            <th colspan="2"><strong>Canal de Twitch:</strong></th>
+            <tr><td colspan="2" style="text-align: left;"><select id="channelSelect" >
+                <option selected="selected" disabled="disabled">Seleccione canal:</option>
+            </select>
+            <span class="icon icon-plus-squared customSizeIcon" id="addChannel" onclick="showAddChannel()"></span>
+            <input type="text" id="channelName" style="display: none;">
+            <span class="icon icon-trash customSizeIcon" id="removeChannel" onclick="removeChannel()"></span>
+        
+        </td>
+
+            </tr>
+     
+        </table>
+    </div>
+    <footer class="toolbar toolbar-footer">
+       
+        </div>
+    </footer>
+</body>
+
+</html>

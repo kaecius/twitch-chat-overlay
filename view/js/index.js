@@ -1,7 +1,9 @@
 var timeout;
 const chat = require('./../js/chat');
+const properties = require('./../js/properties');
 const {
-    ipcRenderer
+    ipcRenderer,
+    BrowserWindow
 } = require('electron');
 
 function init() {
@@ -17,8 +19,6 @@ function generateMessageView(user, msg) {
     if (user.subscriber == true) {
         //SUB del canal
     }
-    userName.style.color = (user["color"] == null) ? '#1CC8E2' : user["color"];
-    userName.appendChild(document.createTextNode(user["display-name"] + ": "));
     userName.style.color = (user["color"] == null) ? '#1CC8E2' : user["color"];
     userName.appendChild(document.createTextNode(user["display-name"] + ": "));
 
@@ -57,12 +57,34 @@ function showMessage(user, msg) {
 }
 
 function startChatReading() {
-    chat.setOnMessageEventListener(showMessage)
-    chat.startReading();
+    chat.setOnMessageEventListener(showMessage);
+    chat.setChatErrorEventListener(showMessage);
+    var selected = (new properties.UserSettingsStore()).getValue("selected");
+    if(selected != null){
+        chat.startReading(selected);
+    }else{
+        showMessage({
+            'display-name': "System Error",
+            color: "#1F4C34"
+        }, "Channel no selected");
+    }
 }
 
 function setScrollBottom() {
     window.scrollTo(0, document.querySelector("#messages").scrollHeight);
+}
+
+function editable(){
+    setDrag();
+    let button = document.getElementById("lock");
+    console.info(button.value);
+    if (button.value == "locked"){
+        console.info("enviado cierre");
+        ipcRenderer.send("config",false);
+    }else{
+        console.info("enviado apertura");
+        ipcRenderer.send("config",true);
+    }
 }
 
 function setDrag() {

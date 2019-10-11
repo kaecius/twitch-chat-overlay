@@ -1,0 +1,40 @@
+#closeConfig {
+    position: absolute;
+    width:25px;
+    left:96%;
+    top:2px;
+}
+
+.customSizeIcon {
+    font-size: 150%;
+    text-align: center;
+}
+.customSizeIcon:hover {
+    cursor: pointer;
+}
+#addChannel:hover {
+    color: olivedrab;
+    
+}
+#removeChannel:hover, #closeConfig:hover {
+    color: red;
+}
+#configTable {
+    width: 100%;
+    text-align: left;
+}
+th {
+    background-color: rgb(220, 223, 225);
+    font-size: 1.5em;
+}
+ .draggable {
+    -webkit-app-region: drag;
+ }
+ #dragSpan {
+     position: absolute;
+     top:0px;
+     left: 0px;
+     width:95%;
+     height: 19px;
+
+ }

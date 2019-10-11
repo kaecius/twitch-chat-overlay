@@ -5,7 +5,7 @@
   "main": "js/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron --enable-transparent-visuals .",
+    "start": "electron --enable-transparent-visuals --disable-gpu .",
     "pack-win": "electron-packager . chat-viewer-overlay --platform=win32 --arch=x64 --asar --overwrite"
   },
   "repository": {
